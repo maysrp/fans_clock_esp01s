@@ -23,7 +23,12 @@ display= SSD1306_I2C(128, 32, i2c)
 f=Font(display)
 f.text("LOADING...",0,0,16)
 f.show()
+time.sleep(1)
+f.fill()
+f.text("w:"+cc['wifi'],0,0,16)
+f.text("p:"+cc['password'],0,16,16)
 wlan.connect(cc['wifi'], cc['password'])
+f.show()
 time.sleep(3)
 
 if not wlan.isconnected():
@@ -70,11 +75,12 @@ while 1:
     time.sleep(0.5)
     wdt.feed()
     if j%20==0:
-        f.fill()
-        f.text("B:"+str(c.bfan),0,0,32)
-        f.show()
-        time.sleep(1)
-        wdt.feed()
+        if c.bfan:
+            f.fill()
+            f.text("B:"+str(c.bfan),0,0,32)
+            f.show()
+            time.sleep(1)
+            wdt.feed()
     if j%100==0:
         c.ntp()
         wdt.feed()
