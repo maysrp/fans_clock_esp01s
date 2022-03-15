@@ -25,11 +25,16 @@ f.text("LOADING...",0,0,16)
 f.show()
 time.sleep(1)
 f.fill()
-f.text("w:"+cc['wifi'],0,0,16)
-f.text("p:"+cc['password'],0,16,16)
+f.text("w:"+cc['wifi'],0,0,8)
+f.text("p:"+cc['password'],0,8,8)
+f.text("city:"+cc['city'],0,16,8)
+f.text("bili:"+cc['bilibili'],0,24,8)
 wlan.connect(cc['wifi'], cc['password'])
 f.show()
 time.sleep(3)
+if not wlan.isconnected():
+    wlan.connect(cc['wifi'], cc['password'])
+    time.sleep(3)
 
 if not wlan.isconnected():
     f.fill()
