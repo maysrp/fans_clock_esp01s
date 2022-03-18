@@ -1,4 +1,4 @@
-from machine import I2C, Pin,RTC,WDT,reset
+from machine import I2C, Pin,RTC,WDT,reset,Timer
 from ssd1306 import SSD1306_I2C
 from font import Font
 import gc
@@ -6,15 +6,14 @@ import network,time
 
 import ujson
 
+web=False
 try:
     f=open("config.ini","r")
     c=f.read()
     cc=ujson.loads(c)
     f.close()
 except Exception as e:
-    import web
-    web.ha=["wifi","password","api","bilibili","city"]
-    web.loop.run_forever() #若没有改文件就启动配网程序
+    web=True
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
@@ -42,13 +41,20 @@ if not wlan.isconnected():
     f.text("open 192.168.4.1",0,16,12)
     f.show()
     gc.collect()
-    try:
-        import web
-    except Exception as e:
-        pass
-    finally:
-        web.ha=["wifi","password","api","bilibili","city"]
-        web.loop.run_forever() #没有联网就启动配网程序
+    web=True
+
+def res(q):
+    print("SYSTEM reboot ")
+    reset()
+
+if web:
+    w=Timer(8)
+    w.init(period=300000, mode=Timer.ONE_SHOT, callback=res)
+    import web
+    web.ha=["wifi","password","api","bilibili","city"]
+    web.loop.run_forever() #若没有改文件就启动配网程序
+    
+    
 f.fill()
 f.text("HELLO WORLD",0,0,16)
 time.sleep(1)
