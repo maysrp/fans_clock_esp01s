@@ -117,5 +117,4 @@ while 1:
             wdt.feed()
     if j==3000:
         j=0
-    wdt.feed()
     gc.collect()
