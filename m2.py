@@ -89,8 +89,8 @@ def bfans(a):
 
 t_w=Timer(9)
 t_f=Timer(10)
-w.init(period=3600000, mode=Timer.PERIODIC, callback=weather)#更新天气 60min
-w.init(period=360000, mode=Timer.PERIODIC, callback=bfans)#更新粉丝 6min
+t_w.init(period=3600000, mode=Timer.PERIODIC, callback=weather)#更新天气 60min
+t_f.init(period=360000, mode=Timer.PERIODIC, callback=bfans)#更新粉丝 6min
 
 while 1:
     f.fill()
