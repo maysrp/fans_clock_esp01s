@@ -69,6 +69,29 @@ e=c.weather()
 j=1
 c.bfans()
 wdt = WDT()
+
+
+
+def weather(a):
+    e=c.weather()
+    wdt.feed()
+    c.ntp()
+    if not c.c["status"]:
+        f.fill()
+        f.text("WIFI ERROR!",0,0,16)
+        f.text("Please reboot!",0,15,16)
+        f.show()
+
+def bfans(a):
+    c.bfans()
+    wdt.feed()
+
+
+t_w=Timer(9)
+t_f=Timer(10)
+t_w.init(period=3600000, mode=Timer.PERIODIC, callback=weather)#更新天气 60min
+t_f.init(period=360000, mode=Timer.PERIODIC, callback=bfans)#更新粉丝 6min
+
 while 1:
     f.fill()
     j=j+1
@@ -92,19 +115,6 @@ while 1:
             f.show()
             time.sleep(1)
             wdt.feed()
-    if j%100==0:
-        c.ntp()
-        wdt.feed()
-        c.bfans()
-        wdt.feed()
     if j==3000:
-        e=c.weather()
-        wdt.feed()
         j=0
-        if not c.c["status"]:
-            f.fill()
-            f.text("WIFI ERROR!",0,0,16)
-        f.text("Please reboot!",0,15,16)
-        f.show()
-    wdt.feed()
     gc.collect()
